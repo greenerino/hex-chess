@@ -42,7 +42,8 @@ func place_pieces():
 		tile_map[piece.axial_coordinates].piece = piece
 
 func _on_piece_axial_coordinates_changed(_coords):
-	place_pieces()
+	if Engine.is_editor_hint():
+		place_pieces()
 
 func highlight_legal_tiles(legal_positions: Array[Vector2i]):
 	for tile_pos in tile_map:
@@ -82,6 +83,9 @@ func move_piece(from_tile: BoardTile, to_tile: BoardTile):
 func _on_tile_clicked(tile: BoardTile, piece: Piece):
 	if tile.legal:
 		move_piece(clicked_tile, tile)
+		clicked_tile = null
+		highlight_legal_tiles([])
+	elif tile == clicked_tile:
 		clicked_tile = null
 		highlight_legal_tiles([])
 	elif piece:
