@@ -48,12 +48,36 @@ func highlight_legal_tiles(legal_positions: Array[Vector2i]):
 	for tile_pos in tile_map:
 		tile_map[tile_pos].legal = legal_positions.any(func(legal_pos): return legal_pos == tile_pos)
 
+func highlight_checked_tiles(checked_positions: Array[Vector2i]):
+	for tile_pos in tile_map:
+		tile_map[tile_pos].in_check = checked_positions.any(func(checked_pos): return checked_pos == tile_pos)
+
+func find_kings():
+	var results: Array[Piece] = []
+	results.assign(get_tree()
+		.get_nodes_in_group("pieces")
+		.filter(func(piece): return piece is King)
+	)
+	return results
+
+func find_checked_coords():
+	var results: Array[Vector2i] = []
+	for king in find_kings():
+		if is_piece_in_check(king.axial_coordinates):
+			results.append(king.axial_coordinates)
+	return results
+
+func update_checked_tiles():
+	var checked_coords = find_checked_coords()
+	highlight_checked_tiles(checked_coords)
+
 func move_piece(from_tile: BoardTile, to_tile: BoardTile):
 	var capturing_piece = from_tile.unset_piece()
 	if to_tile.is_occupied():
-		to_tile.piece.capture()
+		var captured_piece = to_tile.unset_piece()
+		captured_piece.capture()
 	to_tile.piece = capturing_piece
-	print(is_piece_in_check(to_tile.axial_coordinates))
+	update_checked_tiles()
 
 func _on_tile_clicked(tile: BoardTile, piece: Piece):
 	if tile.legal:

@@ -27,12 +27,14 @@ region_rect = Rect2(0, 48, 24, 24)
 
 [node name="LegalSprite" type="Sprite2D" parent="."]
 visible = false
+z_index = 1
 texture = ExtResource("2_70lcg")
 region_enabled = true
 region_rect = Rect2(24, 48, 24, 24)
 
 [node name="CheckSprite" type="Sprite2D" parent="."]
 visible = false
+z_index = 2
 texture = ExtResource("2_70lcg")
 region_enabled = true
 region_rect = Rect2(48, 48, 24, 24)

@@ -20,8 +20,9 @@ const COLORS = Globals.PLAYER_COLORS
 var tile: BoardTile = null:
 	set(value):
 		tile = value
-		axial_coordinates = tile.axial_coordinates
-		create_tween().tween_property(self, "position", tile.position, 0.13)
+		if tile:
+			axial_coordinates = tile.axial_coordinates
+			create_tween().tween_property(self, "position", tile.position, 0.13)
 
 @onready var white_sprite = $WhiteSprite2D
 @onready var black_sprite = $BlackSprite2D
