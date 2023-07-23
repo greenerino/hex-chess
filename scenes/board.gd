@@ -105,7 +105,11 @@ func get_enemy_pieces(color: Globals.PLAYER_COLORS) -> Array[Piece]:
 	return results
 
 func is_piece_in_check(piece_coords: Vector2i):
-	var piece = tile_map[piece_coords]
+	var tile = tile_map[piece_coords]
+	var piece = tile.piece
+	if not piece:
+		push_warning("is_piece_in_check called on piece without a tile")
+		return
 	var enemy_pieces: Array[Piece] = get_enemy_pieces(piece.color)
 	var enemy_moves: Array[Vector2i] = []
 	for enemy in enemy_pieces:
