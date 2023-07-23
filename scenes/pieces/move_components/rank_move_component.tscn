@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://bto43ieuhfdq7"]
+
+[ext_resource type="PackedScene" uid="uid://cxitl68e8sbgt" path="res://scenes/pieces/move_components/move_component.tscn" id="1_aoknf"]
+[ext_resource type="Script" path="res://scenes/pieces/move_components/rank_move_component.gd" id="2_0nnsq"]
+
+[node name="RankMoveComponent" instance=ExtResource("1_aoknf")]
+script = ExtResource("2_0nnsq")

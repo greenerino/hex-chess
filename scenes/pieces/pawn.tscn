@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://dj2hwyyxf0ucx"]
+
+[ext_resource type="PackedScene" uid="uid://g6550fu1xlou" path="res://scenes/pieces/piece.tscn" id="1_krrlc"]
+[ext_resource type="PackedScene" uid="uid://drqxa8qdyrmxi" path="res://scenes/pieces/move_components/pawn_move_component.tscn" id="3_bmoic"]
+
+[node name="Pawn" node_paths=PackedStringArray("move_components") instance=ExtResource("1_krrlc")]
+move_components = [NodePath("PawnMoveComponent")]
+
+[node name="PawnMoveComponent" parent="." index="2" instance=ExtResource("3_bmoic")]

@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=3 uid="uid://swx2xg4mjc2k"]
+
+[ext_resource type="Script" path="res://scenes/board_tile.gd" id="1_0vkbd"]
+[ext_resource type="Texture2D" uid="uid://qitqvug3j56m" path="res://sprites/hex-chess.png" id="2_70lcg"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jlxfn"]
+
+[node name="BoardTile" type="Node2D"]
+script = ExtResource("1_0vkbd")
+
+[node name="WhiteSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_70lcg")
+region_enabled = true
+region_rect = Rect2(0, 24, 24, 24)
+
+[node name="BlackSprite" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_70lcg")
+region_enabled = true
+region_rect = Rect2(0, 0, 24, 24)
+
+[node name="GraySprite" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_70lcg")
+region_enabled = true
+region_rect = Rect2(0, 48, 24, 24)
+
+[node name="LegalSprite" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_70lcg")
+region_enabled = true
+region_rect = Rect2(24, 48, 24, 24)
+
+[node name="CheckSprite" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_70lcg")
+region_enabled = true
+region_rect = Rect2(48, 48, 24, 24)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_jlxfn")
+debug_color = Color(0, 0.6, 0.701961, 0.0941176)
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

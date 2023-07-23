@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://drqxa8qdyrmxi"]
+
+[ext_resource type="PackedScene" uid="uid://cxitl68e8sbgt" path="res://scenes/pieces/move_components/move_component.tscn" id="1_8hlag"]
+[ext_resource type="Script" path="res://scenes/pieces/move_components/pawn_move_component.gd" id="2_bge6u"]
+
+[node name="PawnMoveComponent" instance=ExtResource("1_8hlag")]
+script = ExtResource("2_bge6u")
