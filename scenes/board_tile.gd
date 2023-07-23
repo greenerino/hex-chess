@@ -29,12 +29,12 @@ var in_check: bool:
 		in_check = value
 		on_check()
 
-
 var piece = null:
 	set(value):
 		piece = value
 		if piece:
 			piece.tile = self
+			create_tween().tween_property(piece, "position", position, 0.13)
 
 # Axial coordinates https://www.redblobgames.com/grids/hexagons/#coordinates-axial
 var axial_coordinates = Vector2i(0, 0)

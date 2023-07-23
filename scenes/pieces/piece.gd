@@ -11,8 +11,9 @@ const COLORS = Globals.PLAYER_COLORS
 		set_piece_color()
 @export var axial_coordinates := Vector2i(0, 0):
 	set(val):
-		axial_coordinates = val
-		emit_signal("axial_coordinates_changed", axial_coordinates)
+		if (val != axial_coordinates):
+			axial_coordinates = val
+			emit_signal("axial_coordinates_changed", axial_coordinates)
 
 @export var move_components: Array[MoveComponent] = []
 
