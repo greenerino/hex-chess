@@ -11,7 +11,13 @@ const BoardTile = preload("res://scenes/board_tile.tscn")
 const COLORS = Globals.TILE_COLORS
 const COLOR_ORDER = [COLORS.GRAY, COLORS.WHITE, COLORS.BLACK]
 var tile_map = {}
-var clicked_tile: BoardTile = null
+var clicked_tile: BoardTile = null:
+	set(value):
+		if clicked_tile and clicked_tile is BoardTile:
+			clicked_tile.clicked = false
+		if value and value is BoardTile:
+			value.clicked = true
+		clicked_tile = value
 
 func _ready():
 	build_tiles()

@@ -12,7 +12,8 @@ signal tile_clicked(tile: BoardTile, piece: Piece)
 @onready var gray_sprite = $GraySprite
 @onready var legal_sprite = $LegalSprite
 @onready var check_sprite = $CheckSprite
-@onready var sprites = [white_sprite, black_sprite, gray_sprite, legal_sprite, check_sprite]
+@onready var clicked_sprite = $ClickedSprite
+@onready var sprites = [white_sprite, black_sprite, gray_sprite, legal_sprite, check_sprite, clicked_sprite]
 
 @export var color: COLORS:
 	set(value):
@@ -28,6 +29,11 @@ var in_check: bool:
 	set(value):
 		in_check = value
 		on_check()
+
+var clicked: bool = false:
+	set(value):
+		clicked = value
+		set_sprite()
 
 var piece = null:
 	set(value):
@@ -80,7 +86,9 @@ func set_sprite():
 
 	reset_sprites()
 	
-	if legal:
+	if clicked:
+		clicked_sprite.visible = true
+	elif legal:
 		legal_sprite.visible = true
 	else:
 		match color:
