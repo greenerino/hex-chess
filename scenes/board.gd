@@ -2,7 +2,6 @@
 extends Node2D
 
 const BoardTile = preload("res://scenes/board_tile.tscn")
-const Piece = preload("res://scenes/pieces/piece.tscn")
 
 @export var side_length = 6:
 	set(value):
@@ -13,6 +12,16 @@ const COLORS = Globals.TILE_COLORS
 const COLOR_ORDER = [COLORS.GRAY, COLORS.WHITE, COLORS.BLACK]
 var tile_map = {}
 var clicked_tile: BoardTile = null
+
+func _ready():
+	build_tiles()
+	place_pieces()
+	for piece in get_tree().get_nodes_in_group("pieces"):
+		piece.connect("axial_coordinates_changed", _on_piece_axial_coordinates_changed)
+
+#
+## Tile and Visual Logic
+#
 
 func clear_tiles():
 	for coords in tile_map:
@@ -53,33 +62,13 @@ func highlight_checked_tiles(checked_positions: Array[Vector2i]):
 	for tile_pos in tile_map:
 		tile_map[tile_pos].in_check = checked_positions.any(func(checked_pos): return checked_pos == tile_pos)
 
-func find_kings():
-	var results: Array[Piece] = []
-	results.assign(get_tree()
-		.get_nodes_in_group("pieces")
-		.filter(func(piece): return not piece.captured)
-		.filter(func(piece): return piece is King)
-	)
-	return results
-
-func find_checked_coords():
-	var results: Array[Vector2i] = []
-	for king in find_kings():
-		if is_piece_in_check(king.axial_coordinates):
-			results.append(king.axial_coordinates)
-	return results
-
 func update_checked_tiles():
 	var checked_coords = find_checked_coords()
 	highlight_checked_tiles(checked_coords)
 
-func move_piece(from_tile: BoardTile, to_tile: BoardTile):
-	var capturing_piece = from_tile.unset_piece()
-	if to_tile.is_occupied():
-		var captured_piece = to_tile.unset_piece()
-		captured_piece.capture()
-	to_tile.piece = capturing_piece
-	update_checked_tiles()
+#
+## Board and Piece Logic
+#
 
 func _on_tile_clicked(tile: BoardTile, piece: Piece):
 	if tile.legal:
@@ -97,6 +86,30 @@ func _on_tile_clicked(tile: BoardTile, piece: Piece):
 		clicked_tile = null
 		highlight_legal_tiles([])
 
+func find_kings():
+	var results: Array[Piece] = []
+	results.assign(get_tree()
+		.get_nodes_in_group("pieces")
+		.filter(func(piece): return not piece.captured)
+		.filter(func(piece): return piece is King)
+	)
+	return results
+
+func find_checked_coords():
+	var results: Array[Vector2i] = []
+	for king in find_kings():
+		if is_piece_in_check(king.axial_coordinates):
+			results.append(king.axial_coordinates)
+	return results
+
+func move_piece(from_tile: BoardTile, to_tile: BoardTile):
+	var capturing_piece = from_tile.unset_piece()
+	if to_tile.is_occupied():
+		var captured_piece = to_tile.unset_piece()
+		captured_piece.capture()
+	to_tile.piece = capturing_piece
+	update_checked_tiles()
+
 func get_enemy_pieces(color: Globals.PLAYER_COLORS) -> Array[Piece]:
 	var results: Array[Piece] = []
 	results.assign(get_tree()
@@ -111,16 +124,10 @@ func is_piece_in_check(piece_coords: Vector2i):
 	var piece = tile.piece
 	if not piece:
 		push_warning("is_piece_in_check called on piece without a tile")
-		return
+		return false
 	var enemy_pieces: Array[Piece] = get_enemy_pieces(piece.color)
 	var enemy_moves: Array[Vector2i] = []
 	for enemy in enemy_pieces:
 		enemy_moves.append_array(enemy.legal_moves(tile_map))
 	
 	return enemy_moves.any(func(move): return move == piece_coords)
-
-func _ready():
-	build_tiles()
-	place_pieces()
-	for piece in get_tree().get_nodes_in_group("pieces"):
-		piece.connect("axial_coordinates_changed", _on_piece_axial_coordinates_changed)

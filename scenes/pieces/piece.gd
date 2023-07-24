@@ -45,7 +45,6 @@ func legal_moves(board: Dictionary) -> Array[Vector2i]:
 	return results
 
 func capture():
-	print("Captured piece!")
 	captured = true
 	queue_free()
 
