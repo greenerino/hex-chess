@@ -68,12 +68,14 @@ func is_movable_given_color(c: Globals.PLAYER_COLORS):
 
 func on_check():
 	if (in_check):
-		check_sprite.set_deferred("visible", true)
-		var tween = create_tween()
-		tween.tween_interval(0.5)
-		tween.tween_callback(func(): check_sprite.visible = false)
-		tween.tween_interval(0.5)
-		tween.tween_callback(on_check)
+		check_sprite.set_deferred("visible", !check_sprite.visible)
+		var timer = Timer.new()
+		timer.timeout.connect(on_check)
+		timer.timeout.connect(timer.queue_free)
+		add_child(timer)
+		timer.start(0.5)
+	else:
+		check_sprite.visible = false
 
 func reset_sprites():
 	if sprites:
