@@ -57,6 +57,7 @@ func find_kings():
 	var results: Array[Piece] = []
 	results.assign(get_tree()
 		.get_nodes_in_group("pieces")
+		.filter(func(piece): return not piece.captured)
 		.filter(func(piece): return piece is King)
 	)
 	return results
@@ -100,6 +101,7 @@ func get_enemy_pieces(color: Globals.PLAYER_COLORS) -> Array[Piece]:
 	var results: Array[Piece] = []
 	results.assign(get_tree()
 		.get_nodes_in_group("pieces")
+		.filter(func(piece): return not piece.captured)
 		.filter(func(enemy): return enemy.color != color)
 	)
 	return results

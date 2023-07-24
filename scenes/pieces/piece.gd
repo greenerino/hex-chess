@@ -24,6 +24,8 @@ var tile: BoardTile = null:
 			axial_coordinates = tile.axial_coordinates
 			create_tween().tween_property(self, "position", tile.position, 0.13)
 
+var captured: bool = false
+
 @onready var white_sprite = $WhiteSprite2D
 @onready var black_sprite = $BlackSprite2D
 
@@ -44,6 +46,7 @@ func legal_moves(board: Dictionary) -> Array[Vector2i]:
 
 func capture():
 	print("Captured piece!")
+	captured = true
 	queue_free()
 
 func _ready():
