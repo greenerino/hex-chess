@@ -35,8 +35,6 @@ func place_pieces() -> void:
 ## Find
 #
 
-# TODO: can I try to do `return [].assign()... as Array[Piece]?`
-
 func all_pieces() -> Array[Piece]:
 	var results: Array[Piece] = []
 	results.assign(get_children()
