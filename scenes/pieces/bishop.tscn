@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://xm7ixo86tdmw"]
 
 [ext_resource type="PackedScene" uid="uid://g6550fu1xlou" path="res://scenes/pieces/piece.tscn" id="1_qhkde"]
-[ext_resource type="PackedScene" uid="uid://re3aadkwolud" path="res://scenes/pieces/move_components/diagonal_move_component.tscn" id="2_y86y0"]
+[ext_resource type="PackedScene" uid="uid://23fbjyj1nwrj" path="res://scenes/pieces/move_components/diagonal_move_component.tscn" id="2_y86y0"]
 
 [node name="Bishop" node_paths=PackedStringArray("move_components") instance=ExtResource("1_qhkde")]
 move_components = [NodePath("DiagonalMoveComponent")]

@@ -1,11 +1,9 @@
-@tool
 extends Node2D
 class_name BoardTile
 
-const Piece = preload("res://scenes/pieces/piece.tscn")
 const COLORS = Globals.TILE_COLORS
 
-signal tile_clicked(tile: BoardTile, piece: Piece)
+signal tile_clicked(tile: BoardTile)
 
 @onready var white_sprite = $WhiteSprite
 @onready var black_sprite = $BlackSprite
@@ -35,13 +33,6 @@ var clicked: bool = false:
 		clicked = value
 		set_sprite()
 
-var piece = null:
-	set(value):
-		piece = value
-		if piece:
-			piece.tile = self
-			create_tween().tween_property(piece, "position", position, 0.13)
-
 # Axial coordinates https://www.redblobgames.com/grids/hexagons/#coordinates-axial
 var axial_coordinates = Vector2i(0, 0)
 
@@ -51,20 +42,6 @@ func set_axial_coordinates(q, r):
 	axial_coordinates = Vector2i(q, r)
 	position.x += size * (3.0 / 2) * q
 	position.y += size * (((sqrt(3)/2) * q) + (sqrt(3) * r))
-
-func unset_piece():
-	var p = piece
-	piece = null
-	return p
-
-func is_occupied():
-	return piece != null
-
-func is_occupied_by_enemy(friendly_color: Globals.PLAYER_COLORS):
-	return is_occupied() and piece.color != friendly_color
-
-func is_movable_given_color(c: Globals.PLAYER_COLORS):
-	return (not is_occupied()) or is_occupied_by_enemy(c)
 
 func on_check():
 	if (in_check):
@@ -109,5 +86,4 @@ func is_event_left_mouse_click(event: InputEvent):
 
 func _on_area_2d_input_event(_viewport:Node, event:InputEvent, _shape_idx:int):
 	if is_event_left_mouse_click(event):
-		emit_signal("tile_clicked", self, piece)
-		print("Tile clicked: ", axial_coordinates)
+		emit_signal("tile_clicked", self)

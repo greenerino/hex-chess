@@ -2,11 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://g6550fu1xlou" path="res://scenes/pieces/piece.tscn" id="1_bolfb"]
 [ext_resource type="Script" path="res://scenes/pieces/king.gd" id="2_ec8hp"]
-[ext_resource type="PackedScene" uid="uid://5xbxbsw2a756" path="res://scenes/pieces/move_components/single_space_move_component.tscn" id="2_obgkx"]
+[ext_resource type="PackedScene" uid="uid://cxitl68e8sbgt" path="res://scenes/pieces/move_components/move_component.tscn" id="3_sf18j"]
 
 [node name="King" node_paths=PackedStringArray("move_components") instance=ExtResource("1_bolfb")]
 script = ExtResource("2_ec8hp")
-move_components = [NodePath("SingleSpaceMoveComponent")]
+move_components = [NodePath("MoveComponent")]
 
 [node name="WhiteSprite2D" parent="." index="0"]
 region_rect = Rect2(40, 32, 16, 16)
@@ -14,4 +14,5 @@ region_rect = Rect2(40, 32, 16, 16)
 [node name="BlackSprite2D" parent="." index="1"]
 region_rect = Rect2(72, 32, 16, 16)
 
-[node name="SingleSpaceMoveComponent" parent="." index="2" instance=ExtResource("2_obgkx")]
+[node name="MoveComponent" parent="." index="2" instance=ExtResource("3_sf18j")]
+jumps = Array[Vector2i]([Vector2i(1, -1), Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 1), Vector2i(-1, 0), Vector2i(0, -1), Vector2i(1, -2), Vector2i(2, -1), Vector2i(1, 1), Vector2i(-1, 2), Vector2i(-2, 1), Vector2i(-1, -1)])

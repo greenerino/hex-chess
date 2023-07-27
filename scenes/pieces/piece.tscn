@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://g6550fu1xlou"]
 
-[ext_resource type="Script" path="res://scenes/pieces/piece.gd" id="1_a6vvs"]
+[ext_resource type="Script" path="res://scenes/pieces/piece.gd" id="1_w8fqc"]
 [ext_resource type="Texture2D" uid="uid://qitqvug3j56m" path="res://sprites/hex-chess.png" id="2_ehqe7"]
 
 [node name="Piece" type="Node2D"]
 z_index = 5
-script = ExtResource("1_a6vvs")
+script = ExtResource("1_w8fqc")
 
 [node name="WhiteSprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_ehqe7")

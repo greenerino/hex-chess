@@ -1,0 +1,173 @@
+[gd_scene load_steps=8 format=3 uid="uid://bmv8uk2x3j111"]
+
+[ext_resource type="PackedScene" uid="uid://bypfxko4fj8x2" path="res://scenes/game_position.tscn" id="1_bdfxl"]
+[ext_resource type="PackedScene" uid="uid://xm7ixo86tdmw" path="res://scenes/pieces/bishop.tscn" id="2_lr78n"]
+[ext_resource type="PackedScene" uid="uid://cof8es14j7pq1" path="res://scenes/pieces/knight.tscn" id="3_l18el"]
+[ext_resource type="PackedScene" uid="uid://b2xmu6flaa1h3" path="res://scenes/pieces/king.tscn" id="4_jnf0c"]
+[ext_resource type="PackedScene" uid="uid://b57p3s7y51h5i" path="res://scenes/pieces/queen.tscn" id="5_5ikru"]
+[ext_resource type="PackedScene" uid="uid://cuwq2rq6teivl" path="res://scenes/pieces/rook.tscn" id="6_sx01s"]
+[ext_resource type="PackedScene" uid="uid://dj2hwyyxf0ucx" path="res://scenes/pieces/pawn.tscn" id="7_3otna"]
+
+[node name="StandardStartingPosition" instance=ExtResource("1_bdfxl")]
+
+[node name="WhiteGrayBishop" parent="." index="0" instance=ExtResource("2_lr78n")]
+position = Vector2(0, 62.3538)
+axial_coordinates = Vector2i(0, 3)
+
+[node name="WhiteLightBishop" parent="." index="1" instance=ExtResource("2_lr78n")]
+position = Vector2(0, 103.923)
+axial_coordinates = Vector2i(0, 5)
+
+[node name="WhiteDarkBishop" parent="." index="2" instance=ExtResource("2_lr78n")]
+position = Vector2(0, 83.1384)
+axial_coordinates = Vector2i(0, 4)
+
+[node name="BlackGrayBishop" parent="." index="3" instance=ExtResource("2_lr78n")]
+position = Vector2(0, -62.3538)
+color = 1
+axial_coordinates = Vector2i(0, -3)
+
+[node name="BlackLightBishop" parent="." index="4" instance=ExtResource("2_lr78n")]
+position = Vector2(0, -83.1384)
+color = 1
+axial_coordinates = Vector2i(0, -4)
+
+[node name="BlackDarkBishop" parent="." index="5" instance=ExtResource("2_lr78n")]
+position = Vector2(0, -103.923)
+color = 1
+axial_coordinates = Vector2i(0, -5)
+
+[node name="WhiteKnightRight" parent="." index="6" instance=ExtResource("3_l18el")]
+position = Vector2(36, 83.1384)
+axial_coordinates = Vector2i(2, 3)
+
+[node name="WhiteKnightLeft" parent="." index="7" instance=ExtResource("3_l18el")]
+position = Vector2(-36, 83.1384)
+axial_coordinates = Vector2i(-2, 5)
+
+[node name="BlackKnightRight" parent="." index="8" instance=ExtResource("3_l18el")]
+position = Vector2(36, -83.1384)
+color = 1
+axial_coordinates = Vector2i(2, -5)
+
+[node name="BlackKnightLeft" parent="." index="9" instance=ExtResource("3_l18el")]
+position = Vector2(-36, -83.1384)
+color = 1
+axial_coordinates = Vector2i(-2, -3)
+
+[node name="WhiteKing" parent="." index="10" instance=ExtResource("4_jnf0c")]
+position = Vector2(18, 93.5307)
+axial_coordinates = Vector2i(1, 4)
+
+[node name="BlackKing" parent="." index="11" instance=ExtResource("4_jnf0c")]
+position = Vector2(18, -93.5307)
+color = 1
+axial_coordinates = Vector2i(1, -5)
+
+[node name="WhiteQueen" parent="." index="12" instance=ExtResource("5_5ikru")]
+position = Vector2(-18, 93.5307)
+axial_coordinates = Vector2i(-1, 5)
+
+[node name="BlackQueen" parent="." index="13" instance=ExtResource("5_5ikru")]
+position = Vector2(-18, -93.5307)
+color = 1
+axial_coordinates = Vector2i(-1, -4)
+
+[node name="WhiteRookRight" parent="." index="14" instance=ExtResource("6_sx01s")]
+position = Vector2(54, 72.7461)
+axial_coordinates = Vector2i(3, 2)
+
+[node name="WhiteRookLeft" parent="." index="15" instance=ExtResource("6_sx01s")]
+position = Vector2(-54, 72.7461)
+axial_coordinates = Vector2i(-3, 5)
+
+[node name="BlackRookRight" parent="." index="16" instance=ExtResource("6_sx01s")]
+position = Vector2(54, -72.7461)
+color = 1
+axial_coordinates = Vector2i(3, -5)
+
+[node name="BlackRookLeft" parent="." index="17" instance=ExtResource("6_sx01s")]
+position = Vector2(-54, -72.7461)
+color = 1
+axial_coordinates = Vector2i(-3, -2)
+
+[node name="WhitePawn1" parent="." index="18" instance=ExtResource("7_3otna")]
+position = Vector2(-72, 62.3538)
+axial_coordinates = Vector2i(-4, 5)
+
+[node name="WhitePawn2" parent="." index="19" instance=ExtResource("7_3otna")]
+position = Vector2(-54, 51.9615)
+axial_coordinates = Vector2i(-3, 4)
+
+[node name="WhitePawn3" parent="." index="20" instance=ExtResource("7_3otna")]
+position = Vector2(-36, 41.5692)
+axial_coordinates = Vector2i(-2, 3)
+
+[node name="WhitePawn4" parent="." index="21" instance=ExtResource("7_3otna")]
+position = Vector2(-18, 31.1769)
+axial_coordinates = Vector2i(-1, 2)
+
+[node name="WhitePawn5" parent="." index="22" instance=ExtResource("7_3otna")]
+position = Vector2(0, 20.7846)
+axial_coordinates = Vector2i(0, 1)
+
+[node name="WhitePawn6" parent="." index="23" instance=ExtResource("7_3otna")]
+position = Vector2(18, 31.1769)
+axial_coordinates = Vector2i(1, 1)
+
+[node name="WhitePawn7" parent="." index="24" instance=ExtResource("7_3otna")]
+position = Vector2(36, 41.5692)
+axial_coordinates = Vector2i(2, 1)
+
+[node name="WhitePawn8" parent="." index="25" instance=ExtResource("7_3otna")]
+position = Vector2(54, 51.9615)
+axial_coordinates = Vector2i(3, 1)
+
+[node name="WhitePawn9" parent="." index="26" instance=ExtResource("7_3otna")]
+position = Vector2(72, 62.3538)
+axial_coordinates = Vector2i(4, 1)
+
+[node name="BlackPawn1" parent="." index="27" instance=ExtResource("7_3otna")]
+position = Vector2(-72, -62.3538)
+color = 1
+axial_coordinates = Vector2i(-4, -1)
+
+[node name="BlackPawn2" parent="." index="28" instance=ExtResource("7_3otna")]
+position = Vector2(-54, -51.9615)
+color = 1
+axial_coordinates = Vector2i(-3, -1)
+
+[node name="BlackPawn3" parent="." index="29" instance=ExtResource("7_3otna")]
+position = Vector2(-36, -41.5692)
+color = 1
+axial_coordinates = Vector2i(-2, -1)
+
+[node name="BlackPawn4" parent="." index="30" instance=ExtResource("7_3otna")]
+position = Vector2(-18, -31.1769)
+color = 1
+axial_coordinates = Vector2i(-1, -1)
+
+[node name="BlackPawn5" parent="." index="31" instance=ExtResource("7_3otna")]
+position = Vector2(0, -20.7846)
+color = 1
+axial_coordinates = Vector2i(0, -1)
+
+[node name="BlackPawn6" parent="." index="32" instance=ExtResource("7_3otna")]
+position = Vector2(18, -31.1769)
+color = 1
+axial_coordinates = Vector2i(1, -2)
+
+[node name="BlackPawn7" parent="." index="33" instance=ExtResource("7_3otna")]
+position = Vector2(36, -41.5692)
+color = 1
+axial_coordinates = Vector2i(2, -3)
+
+[node name="BlackPawn8" parent="." index="34" instance=ExtResource("7_3otna")]
+position = Vector2(54, -51.9615)
+color = 1
+axial_coordinates = Vector2i(3, -4)
+
+[node name="BlackPawn9" parent="." index="35" instance=ExtResource("7_3otna")]
+position = Vector2(72, -62.3538)
+color = 1
+axial_coordinates = Vector2i(4, -5)

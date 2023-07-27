@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://cof8es14j7pq1"]
 
 [ext_resource type="PackedScene" uid="uid://g6550fu1xlou" path="res://scenes/pieces/piece.tscn" id="1_qodbo"]
-[ext_resource type="PackedScene" uid="uid://ctrrbyvcm1xx1" path="res://scenes/pieces/move_components/knight_move_component.tscn" id="3_0vcgu"]
+[ext_resource type="PackedScene" uid="uid://cxitl68e8sbgt" path="res://scenes/pieces/move_components/move_component.tscn" id="2_j028n"]
 
 [node name="Knight" node_paths=PackedStringArray("move_components") instance=ExtResource("1_qodbo")]
-move_components = [NodePath("KnightMoveComponent")]
+move_components = [NodePath("MoveComponent")]
 
 [node name="WhiteSprite2D" parent="." index="0"]
 region_rect = Rect2(40, 16, 16, 16)
@@ -12,4 +12,5 @@ region_rect = Rect2(40, 16, 16, 16)
 [node name="BlackSprite2D" parent="." index="1"]
 region_rect = Rect2(72, 16, 16, 16)
 
-[node name="KnightMoveComponent" parent="." index="2" instance=ExtResource("3_0vcgu")]
+[node name="MoveComponent" parent="." index="2" instance=ExtResource("2_j028n")]
+jumps = Array[Vector2i]([Vector2i(1, -3), Vector2i(2, -3), Vector2i(3, -2), Vector2i(3, -1), Vector2i(2, 1), Vector2i(1, 2), Vector2i(-1, 3), Vector2i(-2, 3), Vector2i(-3, 2), Vector2i(-3, 1), Vector2i(-2, -1), Vector2i(-1, -2)])

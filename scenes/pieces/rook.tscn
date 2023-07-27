@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cuwq2rq6teivl"]
 
 [ext_resource type="PackedScene" uid="uid://g6550fu1xlou" path="res://scenes/pieces/piece.tscn" id="1_38tvp"]
-[ext_resource type="PackedScene" uid="uid://bto43ieuhfdq7" path="res://scenes/pieces/move_components/rank_move_component.tscn" id="3_7q7qi"]
+[ext_resource type="PackedScene" uid="uid://c11g6bpf47caw" path="res://scenes/pieces/move_components/rank_move_component.tscn" id="3_7q7qi"]
 
 [node name="Rook" node_paths=PackedStringArray("move_components") instance=ExtResource("1_38tvp")]
 move_components = [NodePath("RankMoveComponent")]

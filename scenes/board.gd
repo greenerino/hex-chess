@@ -1,4 +1,3 @@
-@tool
 extends Node2D
 
 const BoardTile = preload("res://scenes/board_tile.tscn")
@@ -10,7 +9,10 @@ const BoardTile = preload("res://scenes/board_tile.tscn")
 
 const COLORS = Globals.TILE_COLORS
 const COLOR_ORDER = [COLORS.GRAY, COLORS.WHITE, COLORS.BLACK]
-var tile_map = {}
+
+@export var game_position: GamePosition = null
+
+var tiles: Dictionary = {}
 var clicked_tile: BoardTile = null:
 	set(value):
 		if clicked_tile and clicked_tile is BoardTile:
@@ -21,119 +23,78 @@ var clicked_tile: BoardTile = null:
 
 func _ready():
 	build_tiles()
-	place_pieces()
-	for piece in get_tree().get_nodes_in_group("pieces"):
-		piece.connect("axial_coordinates_changed", _on_piece_axial_coordinates_changed)
+	initialize_piece_locations()
 
 #
 ## Tile and Visual Logic
 #
 
 func clear_tiles():
-	for coords in tile_map:
-		tile_map[coords].queue_free()
-	tile_map = {}
+	for coords in tiles:
+		var tile = tiles[coords]
+		tile.queue_free()
+	tiles = {}
 
 func build_tiles():
 	clear_tiles()
 	var curr_color_index = 0
-	var scale_value = (side_length - 1) * 2
-	var bounds = range(-scale_value / 2, scale_value / 2 + 1)
-	for q in bounds:
-		for r in bounds:
-			var s = -q - r
-			if (s <= scale_value / 2 && s >= -scale_value / 2):
-				var tile = BoardTile.instantiate()
-				curr_color_index = (q - r) % COLOR_ORDER.size()
-				tile.color = COLOR_ORDER[curr_color_index]
-				tile.set_axial_coordinates(q, r)
-				tile.set_z_index(0)
-				add_child(tile)
-				tile.connect("tile_clicked", _on_tile_clicked)
-				tile_map[Vector2i(q, r)] = tile
+	for coords in game_position.grid:
+		var q = coords.x
+		var r = coords.y
+		var tile = BoardTile.instantiate()
+		curr_color_index = (q - r) % COLOR_ORDER.size()
+		tile.color = COLOR_ORDER[curr_color_index]
+		tile.set_axial_coordinates(q, r)
+		add_child(tile)
+		tile.connect("tile_clicked", _on_tile_clicked)
+		tiles[coords] = tile
 
-func place_pieces():
-	for piece in get_tree().get_nodes_in_group("pieces"):
-		tile_map[piece.axial_coordinates].piece = piece
-
-func _on_piece_axial_coordinates_changed(_coords):
-	if Engine.is_editor_hint():
-		place_pieces()
+func initialize_piece_locations():
+	for hex in game_position.grid:
+		var piece = game_position.grid[hex]
+		if piece is Piece:
+			var tile = tiles[hex]
+			piece.position = tile.position
 
 func highlight_legal_tiles(legal_positions: Array[Vector2i]):
-	for tile_pos in tile_map:
-		tile_map[tile_pos].legal = legal_positions.any(func(legal_pos): return legal_pos == tile_pos)
+	for tile_pos in tiles:
+		tiles[tile_pos].legal = legal_positions.any(func(legal_pos): return legal_pos == tile_pos)
 
 func highlight_checked_tiles(checked_positions: Array[Vector2i]):
-	for tile_pos in tile_map:
-		tile_map[tile_pos].in_check = checked_positions.any(func(checked_pos): return checked_pos == tile_pos)
+	for tile_pos in tiles:
+		tiles[tile_pos].in_check = checked_positions.any(func(checked_pos): return checked_pos == tile_pos)
 
 func update_checked_tiles():
-	var checked_coords = find_checked_coords()
+	var checked_coords = game_position.find_checked_king_coords()
 	highlight_checked_tiles(checked_coords)
 
 #
 ## Board and Piece Logic
 #
+			# belongs in the Board class
 
-func _on_tile_clicked(tile: BoardTile, piece: Piece):
+func _on_tile_clicked(tile: BoardTile):
+	print("Tile clicked: ", tile.axial_coordinates)
+	var coords = tile.axial_coordinates
 	if tile.legal:
-		move_piece(clicked_tile, tile)
+		game_position.move_piece(clicked_tile.axial_coordinates, tile.axial_coordinates)
 		clicked_tile = null
 		highlight_legal_tiles([])
+		update_checked_tiles()
 	elif tile == clicked_tile:
 		clicked_tile = null
 		highlight_legal_tiles([])
-	elif piece:
+	elif game_position.is_occupied(coords):
 		clicked_tile = tile
-		var legal_moves = piece.legal_moves(tile_map)
+		var piece = game_position.grid[coords]
+		var legal_moves = piece.legal_moves(game_position)
 		highlight_legal_tiles(legal_moves)
 	else:
 		clicked_tile = null
 		highlight_legal_tiles([])
 
-func find_kings():
-	var results: Array[Piece] = []
-	results.assign(get_tree()
-		.get_nodes_in_group("pieces")
-		.filter(func(piece): return not piece.captured)
-		.filter(func(piece): return piece is King)
-	)
-	return results
-
-func find_checked_coords():
-	var results: Array[Vector2i] = []
-	for king in find_kings():
-		if is_piece_in_check(king.axial_coordinates):
-			results.append(king.axial_coordinates)
-	return results
-
-func move_piece(from_tile: BoardTile, to_tile: BoardTile):
-	var capturing_piece = from_tile.unset_piece()
-	if to_tile.is_occupied():
-		var captured_piece = to_tile.unset_piece()
-		captured_piece.capture()
-	to_tile.piece = capturing_piece
-	update_checked_tiles()
-
-func get_enemy_pieces(color: Globals.PLAYER_COLORS) -> Array[Piece]:
-	var results: Array[Piece] = []
-	results.assign(get_tree()
-		.get_nodes_in_group("pieces")
-		.filter(func(piece): return not piece.captured)
-		.filter(func(enemy): return enemy.color != color)
-	)
-	return results
-
-func is_piece_in_check(piece_coords: Vector2i):
-	var tile = tile_map[piece_coords]
-	var piece = tile.piece
-	if not piece:
-		push_warning("is_piece_in_check called on piece without a tile")
-		return false
-	var enemy_pieces: Array[Piece] = get_enemy_pieces(piece.color)
-	var enemy_moves: Array[Vector2i] = []
-	for enemy in enemy_pieces:
-		enemy_moves.append_array(enemy.legal_moves(tile_map))
-	
-	return enemy_moves.any(func(move): return move == piece_coords)
+func _on_game_position_changed(_from: Vector2i, to: Vector2i):
+	var piece = game_position.grid[to]
+	var to_tile = tiles[to]
+	if piece is Piece:
+		create_tween().tween_property(piece, "position", to_tile.position, 0.13)
