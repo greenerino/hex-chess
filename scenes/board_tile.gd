@@ -25,8 +25,9 @@ var legal: bool:
 
 var in_check: bool:
 	set(value):
-		in_check = value
-		on_check()
+		if in_check != value:
+			in_check = value
+			on_check()
 
 var clicked: bool = false:
 	set(value):
