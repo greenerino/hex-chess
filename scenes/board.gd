@@ -86,8 +86,7 @@ func _on_tile_clicked(tile: BoardTile):
 		highlight_legal_tiles([])
 	elif game_position.is_occupied(coords):
 		clicked_tile = tile
-		var piece = game_position.grid[coords]
-		var legal_moves = piece.legal_moves(game_position)
+		var legal_moves = game_position.legal_moves(coords)
 		highlight_legal_tiles(legal_moves)
 	else:
 		clicked_tile = null

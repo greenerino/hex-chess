@@ -42,16 +42,25 @@ func all_pieces() -> Array[Piece]:
 	)
 	return results
 
+func all_pieces_on_board() -> Array[Piece]:
+	var results: Array[Piece] = []
+	results.assign(grid
+		.keys()
+		.map(func(key): return grid[key])
+		.filter(func(node): return node is Piece)
+	)
+	return results
+
 func find_kings() -> Array[Piece]:
 	var results: Array[Piece] = []
-	results.assign(all_pieces()
+	results.assign(all_pieces_on_board()
 		.filter(func(piece): return piece is King)
 	)
 	return results
 
 func get_enemy_pieces(color: Globals.PLAYER_COLORS) -> Array[Piece]:
 	var results: Array[Piece] = []
-	results.assign(all_pieces()
+	results.assign(all_pieces_on_board()
 		.filter(func(piece): return not piece.captured)
 		.filter(func(enemy): return enemy.color != color)
 	)
@@ -96,9 +105,51 @@ func is_piece_attacked(piece_coords: Vector2i) -> bool:
 
 	return enemy_moves.any(func(move): return move == piece_coords)
 
+func is_colored_king_in_check(color: Globals.PLAYER_COLORS) -> bool:
+	return not (find_checked_king_coords()
+		.map(func(coords): return grid[coords])
+		.filter(func(king): return king.color == color)
+		.is_empty()
+	)
+
+func legal_moves(hex: Vector2i) -> Array[Vector2i]:
+	if not grid.has(hex):
+		push_warning("legal_moves called on invalid hex: ", hex)
+		return []
+	if not is_occupied(hex):
+		push_warning("legal_moves called on empty hex")
+		return []
+	var piece = grid[hex]
+	var moves = piece.legal_moves(self)
+	return moves.filter(func(move):
+		var captured_piece = soft_move_piece(hex, move)
+		var legal = not is_colored_king_in_check(piece.color)
+		undo_soft_move(hex, move, captured_piece)
+		return legal
+	)
+
 #
 ## Transform
 #
+
+# Moves a piece without capturing any pieces. With the intention of calculating
+# hypothetical positions, expecting a call to undo_soft_move shortly afterward
+func soft_move_piece(from: Vector2i, to: Vector2i):
+	assert(is_occupied(from), str("soft_move_piece called on empty tile: ", from))
+	var capturing_piece = grid[from]
+	var captured_piece = grid[to] # can be a Piece or EMPTY
+	grid[from] = EMPTY
+	grid[to] = capturing_piece
+	capturing_piece.axial_coordinates = to
+	return captured_piece
+
+func undo_soft_move(original_from: Vector2i, original_to: Vector2i, captured_piece):
+	var capturing_piece = grid[original_to]
+	assert(capturing_piece is Piece, "undo_soft_move called where original_to doesn't hold a piece")
+	capturing_piece.axial_coordinates = original_from
+	grid[original_to] = captured_piece
+	grid[original_from] = capturing_piece
+
 
 func move_piece(from: Vector2i, to: Vector2i) -> void:
 	assert(is_occupied(from), str("move_piece called on empty tile: ", from))
