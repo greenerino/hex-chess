@@ -8,7 +8,6 @@
 [node name="Board" parent="." node_paths=PackedStringArray("game_position") instance=ExtResource("1_edhng")]
 position = Vector2(109, 139)
 game_position = NodePath("StandardStartingPosition")
+free_play = true
 
 [node name="StandardStartingPosition" parent="Board" instance=ExtResource("2_vsajp")]
-
-[connection signal="position_changed" from="Board/StandardStartingPosition" to="Board" method="_on_game_position_changed"]

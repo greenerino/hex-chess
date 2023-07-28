@@ -7,10 +7,10 @@ const BoardTile = preload("res://scenes/board_tile.tscn")
 		side_length = value
 		build_tiles()
 
-const COLORS = Globals.TILE_COLORS
-const COLOR_ORDER = [COLORS.GRAY, COLORS.WHITE, COLORS.BLACK]
+const COLOR_ORDER = [Globals.TILE_COLORS.GRAY, Globals.TILE_COLORS.WHITE, Globals.TILE_COLORS.BLACK]
 
 @export var game_position: GamePosition = null
+@export var free_play = false
 
 var tiles: Dictionary = {}
 var clicked_tile: BoardTile = null:
@@ -20,10 +20,12 @@ var clicked_tile: BoardTile = null:
 		if value and value is BoardTile:
 			value.clicked = true
 		clicked_tile = value
+var curr_turn: Globals.PLAYER_COLORS = Globals.PLAYER_COLORS.WHITE
 
 func _ready():
 	build_tiles()
 	initialize_piece_locations()
+	game_position.connect("position_changed", _on_game_position_changed)
 
 #
 ## Tile and Visual Logic
@@ -68,10 +70,18 @@ func update_checked_tiles():
 	var checked_coords = game_position.find_checked_king_coords()
 	highlight_checked_tiles(checked_coords)
 
+func flip_turn():
+	match curr_turn:
+		Globals.PLAYER_COLORS.WHITE:
+			curr_turn = Globals.PLAYER_COLORS.BLACK
+		Globals.PLAYER_COLORS.BLACK:
+			curr_turn = Globals.PLAYER_COLORS.WHITE
+		_:
+			push_error("Curr_turn is not a color: ", curr_turn)
+
 #
-## Board and Piece Logic
+## Listeners
 #
-			# belongs in the Board class
 
 func _on_tile_clicked(tile: BoardTile):
 	print("Tile clicked: ", tile.axial_coordinates)
@@ -81,10 +91,11 @@ func _on_tile_clicked(tile: BoardTile):
 		clicked_tile = null
 		highlight_legal_tiles([])
 		update_checked_tiles()
+		flip_turn()
 	elif tile == clicked_tile:
 		clicked_tile = null
 		highlight_legal_tiles([])
-	elif game_position.is_occupied(coords):
+	elif game_position.is_occupied(coords) and (free_play or game_position.grid[coords].color == curr_turn):
 		clicked_tile = tile
 		var legal_moves = game_position.legal_moves(coords)
 		highlight_legal_tiles(legal_moves)

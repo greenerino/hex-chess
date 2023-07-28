@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://bb5htuh4j88nr"]
+
+[ext_resource type="PackedScene" uid="uid://bypfxko4fj8x2" path="res://scenes/game_position.tscn" id="1_0oosb"]
+[ext_resource type="PackedScene" uid="uid://b2xmu6flaa1h3" path="res://scenes/pieces/king.tscn" id="2_nuv54"]
+[ext_resource type="PackedScene" uid="uid://cuwq2rq6teivl" path="res://scenes/pieces/rook.tscn" id="3_tkign"]
+[ext_resource type="PackedScene" uid="uid://xm7ixo86tdmw" path="res://scenes/pieces/bishop.tscn" id="4_fn7al"]
+
+[node name="PinTestGamePosition" instance=ExtResource("1_0oosb")]
+
+[node name="WhiteKing" parent="." index="0" instance=ExtResource("2_nuv54")]
+axial_coordinates = Vector2i(-3, 0)
+
+[node name="BlackKing" parent="." index="1" instance=ExtResource("2_nuv54")]
+color = 1
+axial_coordinates = Vector2i(5, -2)
+
+[node name="WhiteRook" parent="." index="2" instance=ExtResource("3_tkign")]
+axial_coordinates = Vector2i(-1, -1)
+
+[node name="BlackBishop" parent="." index="3" instance=ExtResource("4_fn7al")]
+color = 1
+axial_coordinates = Vector2i(3, -3)
