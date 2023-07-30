@@ -13,6 +13,7 @@ const COLOR_ORDER = [Globals.TILE_COLORS.GRAY, Globals.TILE_COLORS.WHITE, Global
 @export var game_timer: GameTimer = null
 @export var free_play = false
 @export var end_label: Label = null
+@export var perspective := Globals.PLAYER_COLORS.WHITE
 
 var tiles: Dictionary = {}
 var clicked_tile: BoardTile = null:
@@ -31,6 +32,7 @@ func _ready():
 	initialize_piece_locations()
 	game_position.connect("position_changed", _on_game_position_changed)
 	game_position.connect("checkmate", _on_checkmate)
+	game_timer.perspective = perspective
 
 #
 ## Tile and Visual Logic
@@ -51,6 +53,7 @@ func build_tiles():
 		var tile = BoardTile.instantiate()
 		curr_color_index = (q - r) % COLOR_ORDER.size()
 		tile.color = COLOR_ORDER[curr_color_index]
+		tile.perspective = perspective
 		tile.set_axial_coordinates(q, r)
 		add_child(tile)
 		tile.connect("tile_clicked", _on_tile_clicked)

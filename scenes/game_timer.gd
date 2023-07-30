@@ -5,12 +5,19 @@ signal flagged(color: Globals.PLAYER_COLORS)
 
 @export var base_min: float = 5.0
 @export var increment_sec: int = 0
-@export var perspective: Globals.PLAYER_COLORS = Globals.PLAYER_COLORS.WHITE
+@export var perspective: Globals.PLAYER_COLORS = Globals.PLAYER_COLORS.WHITE:
+	set(value):
+		perspective = value
+		on_perspective_change()
+
 
 @onready var base_seconds = base_min * 60
 @onready var white_timer: Timer = $WhiteTimer
 @onready var black_timer: Timer = $BlackTimer
-@onready var vbox: VBoxContainer = $VBoxContainer
+@onready var vbox: VBoxContainer = $VBoxContainer:
+	set(value):
+		vbox = value
+		on_perspective_change()
 @onready var white_color_rect: ColorRect = $VBoxContainer/WhiteLabel/ColorRect
 @onready var black_color_rect: ColorRect = $VBoxContainer/BlackLabel/ColorRect
 @onready var white_label: Label = $VBoxContainer/WhiteLabel
@@ -24,11 +31,6 @@ var curr_turn: Globals.PLAYER_COLORS
 var game_started = false
 
 func _ready() -> void:
-	if perspective == Globals.PLAYER_COLORS.WHITE:
-		vbox.move_child(white_label, 1)
-	else:
-		vbox.move_child(black_label, 1)
-
 	white_timer.start(base_seconds)
 	white_timer.paused = true
 	black_timer.start(base_seconds)
@@ -37,6 +39,14 @@ func _ready() -> void:
 	black_timer.connect("timeout", on_flag.bind(Globals.PLAYER_COLORS.BLACK))
 	white_color_rect.color = inactive_color
 	black_color_rect.color = inactive_color
+
+func on_perspective_change():
+	if vbox:
+		if perspective == Globals.PLAYER_COLORS.WHITE:
+			vbox.move_child(white_label, 1)
+		else:
+			vbox.move_child(black_label, 1)
+
 
 func get_timer_by_color(color: Globals.PLAYER_COLORS) -> Timer:
 	match color:

@@ -1,9 +1,9 @@
 extends Node2D
 class_name BoardTile
 
-const COLORS = Globals.TILE_COLORS
-
 signal tile_clicked(tile: BoardTile)
+
+const COLORS = Globals.TILE_COLORS
 
 @onready var white_sprite = $WhiteSprite
 @onready var black_sprite = $BlackSprite
@@ -17,6 +17,7 @@ signal tile_clicked(tile: BoardTile)
 	set(value):
 		color = value
 		set_sprite()
+@export var perspective := Globals.PLAYER_COLORS.WHITE
 
 var legal: bool:
 	set(value):
@@ -38,11 +39,16 @@ var clicked: bool = false:
 var axial_coordinates = Vector2i(0, 0)
 
 const size = 12
+const perspective_rotation = {
+	Globals.PLAYER_COLORS.WHITE: 0,
+	Globals.PLAYER_COLORS.BLACK: PI,
+}
 
 func set_axial_coordinates(q, r):
 	axial_coordinates = Vector2i(q, r)
 	position.x += size * (3.0 / 2) * q
 	position.y += size * (((sqrt(3)/2) * q) + (sqrt(3) * r))
+	position = position.rotated(perspective_rotation[perspective])
 
 func on_check():
 	if (in_check):
