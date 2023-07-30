@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://qogoe1xc1x0q"]
+
+[ext_resource type="Script" path="res://scenes/lobby.gd" id="1_5ed5j"]
+[ext_resource type="PackedScene" uid="uid://kbnkrwmtu7l8" path="res://scenes/menus/main_menu.tscn" id="2_b7y63"]
+[ext_resource type="PackedScene" uid="uid://dqtxkokc0s0h1" path="res://scenes/menus/new_game_menu.tscn" id="3_l1mfc"]
+
+[node name="Lobby" type="Control" node_paths=PackedStringArray("main_menu", "new_game_menu")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_5ed5j")
+main_menu = NodePath("MainMenu")
+new_game_menu = NodePath("NewGameMenu")
+
+[node name="MainMenu" parent="." instance=ExtResource("2_b7y63")]
+layout_mode = 1
+
+[node name="NewGameMenu" parent="." instance=ExtResource("3_l1mfc")]
+visible = false
+layout_mode = 1
+
+[connection signal="new_game_requested" from="MainMenu" to="." method="_on_main_menu_new_game_requested"]
+[connection signal="create_game" from="NewGameMenu" to="." method="_on_new_game_menu_create_game"]

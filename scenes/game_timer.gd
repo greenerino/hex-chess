@@ -3,8 +3,17 @@ class_name GameTimer
 
 signal flagged(color: Globals.PLAYER_COLORS)
 
-@export var base_min: float = 5.0
-@export var increment_sec: int = 0
+@export var base_min: float = 5.0:
+	set(value):
+		assert(not game_started, "game already started. Cannot change time controls")
+		base_min = value
+		base_seconds = value * 60
+		set_timers()
+@export var increment_sec: int = 0:
+	set(value):
+		assert(not game_started, "game already started. Cannot change time controls")
+		increment_sec = value
+		set_timers()
 @export var perspective: Globals.PLAYER_COLORS = Globals.PLAYER_COLORS.WHITE:
 	set(value):
 		perspective = value
@@ -31,14 +40,18 @@ var curr_turn: Globals.PLAYER_COLORS
 var game_started = false
 
 func _ready() -> void:
-	white_timer.start(base_seconds)
-	white_timer.paused = true
-	black_timer.start(base_seconds)
-	black_timer.paused = true
+	set_timers()
 	white_timer.connect("timeout", on_flag.bind(Globals.PLAYER_COLORS.WHITE))
 	black_timer.connect("timeout", on_flag.bind(Globals.PLAYER_COLORS.BLACK))
 	white_color_rect.color = inactive_color
 	black_color_rect.color = inactive_color
+
+func set_timers() -> void:
+	if (white_timer and black_timer):
+		white_timer.start(base_seconds)
+		white_timer.paused = true
+		black_timer.start(base_seconds)
+		black_timer.paused = true
 
 func on_perspective_change():
 	if vbox:

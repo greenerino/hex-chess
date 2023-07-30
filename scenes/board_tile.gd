@@ -17,7 +17,10 @@ const COLORS = Globals.TILE_COLORS
 	set(value):
 		color = value
 		set_sprite()
-@export var perspective := Globals.PLAYER_COLORS.WHITE
+@export var perspective := Globals.PLAYER_COLORS.WHITE:
+	set(value):
+		perspective = value
+		set_axial_coordinates(axial_coordinates.x, axial_coordinates.y)
 
 var legal: bool:
 	set(value):
@@ -46,8 +49,8 @@ const perspective_rotation = {
 
 func set_axial_coordinates(q, r):
 	axial_coordinates = Vector2i(q, r)
-	position.x += size * (3.0 / 2) * q
-	position.y += size * (((sqrt(3)/2) * q) + (sqrt(3) * r))
+	position.x = size * (3.0 / 2) * q
+	position.y = size * (((sqrt(3)/2) * q) + (sqrt(3) * r))
 	position = position.rotated(perspective_rotation[perspective])
 
 func on_check():

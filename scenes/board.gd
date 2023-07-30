@@ -1,4 +1,5 @@
 extends Node2D
+class_name Board
 
 const BoardTile = preload("res://scenes/board_tile.tscn")
 
@@ -13,7 +14,10 @@ const COLOR_ORDER = [Globals.TILE_COLORS.GRAY, Globals.TILE_COLORS.WHITE, Global
 @export var game_timer: GameTimer = null
 @export var free_play = false
 @export var end_label: Label = null
-@export var perspective := Globals.PLAYER_COLORS.WHITE
+var perspective := Globals.PLAYER_COLORS.WHITE:
+	set(value):
+		perspective = value
+		on_perspective_change()
 
 var tiles: Dictionary = {}
 var clicked_tile: BoardTile = null:
@@ -33,6 +37,13 @@ func _ready():
 	game_position.connect("position_changed", _on_game_position_changed)
 	game_position.connect("checkmate", _on_checkmate)
 	game_timer.perspective = perspective
+
+func on_perspective_change():
+	game_timer.perspective = perspective
+	for hex in tiles:
+		var tile = tiles[hex]
+		tile.perspective = perspective
+	initialize_piece_locations()
 
 #
 ## Tile and Visual Logic

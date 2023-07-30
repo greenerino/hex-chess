@@ -1,0 +1,97 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqtxkokc0s0h1"]
+
+[ext_resource type="Script" path="res://scenes/menus/new_game_menu.gd" id="1_rcvtq"]
+[ext_resource type="ButtonGroup" uid="uid://db7i40eaaa4b1" path="res://color_select_button_group.tres" id="2_uwvmx"]
+
+[node name="NewGameMenu" type="Control" node_paths=PackedStringArray("base_minutes_slider", "increment_slider", "minutes_label", "increment_label", "white_button", "black_button", "random_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rcvtq")
+base_minutes_slider = NodePath("MarginContainer/VBoxContainer/MinutesSlider")
+increment_slider = NodePath("MarginContainer/VBoxContainer/IncrementSlider")
+minutes_label = NodePath("MarginContainer/VBoxContainer/MinutesLabel")
+increment_label = NodePath("MarginContainer/VBoxContainer/IncrementLabel")
+white_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/WhiteBox")
+black_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/BlackBox")
+random_button = NodePath("MarginContainer/VBoxContainer/HBoxContainer/RandomBox")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MinutesLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Minutes per side:"
+
+[node name="MinutesSlider" type="HSlider" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+max_value = 60.0
+value = 5.0
+exp_edit = true
+rounded = true
+
+[node name="IncrementLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Seconds of increment:"
+
+[node name="IncrementSlider" type="HSlider" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 20.0
+value = 3.0
+rounded = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "White:"
+
+[node name="WhiteBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+button_group = ExtResource("2_uwvmx")
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Black:"
+
+[node name="BlackBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+button_group = ExtResource("2_uwvmx")
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Random:"
+
+[node name="RandomBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+button_pressed = true
+button_group = ExtResource("2_uwvmx")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 40
+
+[node name="CreateGameButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+text = "Create Game"
+
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/MinutesSlider" to="." method="_on_minutes_slider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer/IncrementSlider" to="." method="_on_increment_slider_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/CreateGameButton" to="." method="_on_create_game_button_pressed"]

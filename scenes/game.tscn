@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://cg36sxnuvjxo2"]
+
+[ext_resource type="PackedScene" uid="uid://blnnrdcmee3rn" path="res://scenes/board.tscn" id="1_08ljb"]
+[ext_resource type="Script" path="res://scenes/game.gd" id="1_o18ss"]
+[ext_resource type="PackedScene" uid="uid://bmv8uk2x3j111" path="res://scenes/standard_starting_position.tscn" id="2_7flwd"]
+[ext_resource type="PackedScene" uid="uid://dq1xwsgvaes70" path="res://scenes/game_timer.tscn" id="3_er5iv"]
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("board")]
+script = ExtResource("1_o18ss")
+base_minutes = 40
+increment = 15
+board = NodePath("Board")
+
+[node name="Board" parent="." node_paths=PackedStringArray("game_position", "game_timer", "end_label") instance=ExtResource("1_08ljb")]
+position = Vector2(109.2, 150)
+game_position = NodePath("StandardStartingPosition")
+game_timer = NodePath("GameTimer")
+end_label = NodePath("../EndGameLabel")
+
+[node name="StandardStartingPosition" parent="Board" instance=ExtResource("2_7flwd")]
+
+[node name="GameTimer" parent="Board" instance=ExtResource("3_er5iv")]
+position = Vector2(134.8, -24)
+base_min = 3.0
+increment_sec = 0
+
+[node name="EndGameLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 49.105
+offset_top = 8.49
+offset_right = 254.105
+offset_bottom = 34.49
+grow_horizontal = 2
+size_flags_horizontal = 4
+text = "Black timeout. White wins!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="flagged" from="Board/GameTimer" to="Board" method="_on_game_timer_flagged"]
