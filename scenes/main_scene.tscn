@@ -15,5 +15,7 @@ game_timer = NodePath("GameTimer")
 
 [node name="GameTimer" parent="Board" instance=ExtResource("3_n8w5x")]
 position = Vector2(134.8, -24)
-base_min = 3.0
+base_min = 0.1
 increment_sec = 0
+
+[connection signal="flagged" from="Board/GameTimer" to="Board" method="_on_game_timer_flagged"]

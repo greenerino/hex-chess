@@ -64,7 +64,7 @@ func change_turns() -> void:
 	prev_timer.start(prev_timer.time_left + increment_sec)
 	prev_timer.paused = true
 
-	curr_turn = Globals.opposite_color(curr_turn)
+	curr_turn = Globals.opposite_color[curr_turn]
 
 	get_timer_by_color(curr_turn).paused = false
 
@@ -74,9 +74,12 @@ func start_game(color: Globals.PLAYER_COLORS) -> void:
 	curr_turn = color
 	game_started = true
 
-func on_flag(color: Globals.PLAYER_COLORS) -> void:
+func pause_timers() -> void:
 	white_timer.paused = true
 	black_timer.paused = true
+
+func on_flag(color: Globals.PLAYER_COLORS) -> void:
+	pause_timers()
 	emit_signal("flagged", color)
 
 func format_and_set_text(label: Label, sec_left: float) -> void:
@@ -87,9 +90,9 @@ func format_and_set_text(label: Label, sec_left: float) -> void:
 
 func set_timer_colors() -> void:
 	var active_rect = get_color_rect_by_player_color(curr_turn)
-	var inactive_rect = get_color_rect_by_player_color(Globals.opposite_color(curr_turn))
+	var inactive_rect = get_color_rect_by_player_color(Globals.opposite_color[curr_turn])
 	var active_timer = get_timer_by_color(curr_turn)
-	var inactive_timer = get_timer_by_color(Globals.opposite_color(curr_turn))
+	var inactive_timer = get_timer_by_color(Globals.opposite_color[curr_turn])
 	if active_timer.time_left <= base_seconds * 0.2:
 		active_rect.color = active_critical_color
 	else:

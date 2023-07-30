@@ -23,6 +23,7 @@ var clicked_tile: BoardTile = null:
 		clicked_tile = value
 var curr_turn: Globals.PLAYER_COLORS = Globals.PLAYER_COLORS.WHITE
 var game_started = false
+var game_ended = false
 
 func _ready():
 	build_tiles()
@@ -73,7 +74,7 @@ func update_checked_tiles():
 	highlight_checked_tiles(checked_coords)
 
 func flip_turn():
-	curr_turn = Globals.opposite_color(curr_turn)
+	curr_turn = Globals.opposite_color[curr_turn]
 	if not game_started:
 		game_timer.start_game(curr_turn)
 		game_started = true
@@ -86,6 +87,9 @@ func flip_turn():
 
 func _on_tile_clicked(tile: BoardTile):
 	print("Tile clicked: ", tile.axial_coordinates)
+	if game_ended:
+		return
+
 	var coords = tile.axial_coordinates
 	if tile.legal:
 		game_position.move_piece(clicked_tile.axial_coordinates, tile.axial_coordinates)
@@ -109,3 +113,7 @@ func _on_game_position_changed(_from: Vector2i, to: Vector2i):
 	var to_tile = tiles[to]
 	if piece is Piece:
 		create_tween().tween_property(piece, "position", to_tile.position, 0.13)
+
+func _on_game_timer_flagged(color: Globals.PLAYER_COLORS) -> void:
+	print(Globals.player_color_name[color], " timeout. ", Globals.player_color_name[Globals.opposite_color[color]], " wins!")
+	game_ended = true
