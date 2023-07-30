@@ -12,6 +12,7 @@ const COLOR_ORDER = [Globals.TILE_COLORS.GRAY, Globals.TILE_COLORS.WHITE, Global
 @export var game_position: GamePosition = null
 @export var game_timer: GameTimer = null
 @export var free_play = false
+@export var end_label: Label = null
 
 var tiles: Dictionary = {}
 var clicked_tile: BoardTile = null:
@@ -81,6 +82,11 @@ func flip_turn():
 	else:
 		game_timer.change_turns()
 
+func end_game(msg: String):
+	end_label.text = msg
+	end_label.visible = true
+	game_ended = true
+
 #
 ## Listeners
 #
@@ -115,5 +121,8 @@ func _on_game_position_changed(_from: Vector2i, to: Vector2i):
 		create_tween().tween_property(piece, "position", to_tile.position, 0.13)
 
 func _on_game_timer_flagged(color: Globals.PLAYER_COLORS) -> void:
-	print(Globals.player_color_name[color], " timeout. ", Globals.player_color_name[Globals.opposite_color[color]], " wins!")
-	game_ended = true
+	var timeout_player_color_name = Globals.player_color_name[color]
+	var winning_player_color = Globals.opposite_color[color]
+	var winning_player_color_name = Globals.player_color_name[winning_player_color]
+	var msg = "%s timeout. %s wins!" % [timeout_player_color_name, winning_player_color_name]
+	end_game(msg)

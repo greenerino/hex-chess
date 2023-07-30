@@ -6,10 +6,11 @@
 
 [node name="MainScene" type="Node2D"]
 
-[node name="Board" parent="." node_paths=PackedStringArray("game_position", "game_timer") instance=ExtResource("1_edhng")]
+[node name="Board" parent="." node_paths=PackedStringArray("game_position", "game_timer", "end_label") instance=ExtResource("1_edhng")]
 position = Vector2(109.2, 150)
 game_position = NodePath("StandardStartingPosition")
 game_timer = NodePath("GameTimer")
+end_label = NodePath("../EndGameLabel")
 
 [node name="StandardStartingPosition" parent="Board" instance=ExtResource("2_vsajp")]
 
@@ -17,5 +18,20 @@ game_timer = NodePath("GameTimer")
 position = Vector2(134.8, -24)
 base_min = 0.1
 increment_sec = 0
+
+[node name="EndGameLabel" type="Label" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 49.105
+offset_top = 8.49
+offset_right = 254.105
+offset_bottom = 34.49
+grow_horizontal = 2
+size_flags_horizontal = 4
+text = "Black timeout. White wins!"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="flagged" from="Board/GameTimer" to="Board" method="_on_game_timer_flagged"]
