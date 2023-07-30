@@ -10,6 +10,7 @@ const BoardTile = preload("res://scenes/board_tile.tscn")
 const COLOR_ORDER = [Globals.TILE_COLORS.GRAY, Globals.TILE_COLORS.WHITE, Globals.TILE_COLORS.BLACK]
 
 @export var game_position: GamePosition = null
+@export var game_timer: GameTimer = null
 @export var free_play = false
 
 var tiles: Dictionary = {}
@@ -21,6 +22,7 @@ var clicked_tile: BoardTile = null:
 			value.clicked = true
 		clicked_tile = value
 var curr_turn: Globals.PLAYER_COLORS = Globals.PLAYER_COLORS.WHITE
+var game_started = false
 
 func _ready():
 	build_tiles()
@@ -71,13 +73,12 @@ func update_checked_tiles():
 	highlight_checked_tiles(checked_coords)
 
 func flip_turn():
-	match curr_turn:
-		Globals.PLAYER_COLORS.WHITE:
-			curr_turn = Globals.PLAYER_COLORS.BLACK
-		Globals.PLAYER_COLORS.BLACK:
-			curr_turn = Globals.PLAYER_COLORS.WHITE
-		_:
-			push_error("Curr_turn is not a color: ", curr_turn)
+	curr_turn = Globals.opposite_color(curr_turn)
+	if not game_started:
+		game_timer.start_game(curr_turn)
+		game_started = true
+	else:
+		game_timer.change_turns()
 
 #
 ## Listeners
