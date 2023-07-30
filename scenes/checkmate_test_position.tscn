@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://7tivf6im1bkj"]
+
+[ext_resource type="PackedScene" uid="uid://bypfxko4fj8x2" path="res://scenes/game_position.tscn" id="1_xjcga"]
+[ext_resource type="PackedScene" uid="uid://b2xmu6flaa1h3" path="res://scenes/pieces/king.tscn" id="2_hvima"]
+[ext_resource type="PackedScene" uid="uid://b57p3s7y51h5i" path="res://scenes/pieces/queen.tscn" id="3_6kfyr"]
+[ext_resource type="PackedScene" uid="uid://cuwq2rq6teivl" path="res://scenes/pieces/rook.tscn" id="4_32deg"]
+
+[node name="CheckmateTestPosition" instance=ExtResource("1_xjcga")]
+
+[node name="WhiteKing" parent="." index="0" instance=ExtResource("2_hvima")]
+axial_coordinates = Vector2i(0, 5)
+
+[node name="BlackKing" parent="." index="1" instance=ExtResource("2_hvima")]
+color = 1
+axial_coordinates = Vector2i(-2, -3)
+
+[node name="WhiteQueen" parent="." index="2" instance=ExtResource("3_6kfyr")]
+axial_coordinates = Vector2i(-1, 0)
+
+[node name="WhiteRook" parent="." index="3" instance=ExtResource("4_32deg")]
+axial_coordinates = Vector2i(-1, 1)

@@ -30,6 +30,7 @@ func _ready():
 	build_tiles()
 	initialize_piece_locations()
 	game_position.connect("position_changed", _on_game_position_changed)
+	game_position.connect("checkmate", _on_checkmate)
 
 #
 ## Tile and Visual Logic
@@ -76,6 +77,9 @@ func update_checked_tiles():
 
 func flip_turn():
 	curr_turn = Globals.opposite_color[curr_turn]
+	if game_ended:
+		return
+
 	if not game_started:
 		game_timer.start_game(curr_turn)
 		game_started = true
@@ -85,6 +89,7 @@ func flip_turn():
 func end_game(msg: String):
 	end_label.text = msg
 	end_label.visible = true
+	game_timer.pause_timers()
 	game_ended = true
 
 #
@@ -125,4 +130,9 @@ func _on_game_timer_flagged(color: Globals.PLAYER_COLORS) -> void:
 	var winning_player_color = Globals.opposite_color[color]
 	var winning_player_color_name = Globals.player_color_name[winning_player_color]
 	var msg = "%s timeout. %s wins!" % [timeout_player_color_name, winning_player_color_name]
+	end_game(msg)
+
+func _on_checkmate(winner: Globals.PLAYER_COLORS):
+	var winner_name = Globals.player_color_name[winner]
+	var msg = "Checkmate. %s wins!" % [winner_name]
 	end_game(msg)

@@ -1,23 +1,27 @@
-[gd_scene load_steps=4 format=3 uid="uid://cg36sxnuvjxo2"]
+[gd_scene load_steps=5 format=3 uid="uid://cg36sxnuvjxo2"]
 
 [ext_resource type="PackedScene" uid="uid://blnnrdcmee3rn" path="res://scenes/board.tscn" id="1_edhng"]
 [ext_resource type="PackedScene" uid="uid://bmv8uk2x3j111" path="res://scenes/standard_starting_position.tscn" id="2_vsajp"]
 [ext_resource type="PackedScene" uid="uid://dq1xwsgvaes70" path="res://scenes/game_timer.tscn" id="3_n8w5x"]
+[ext_resource type="PackedScene" uid="uid://7tivf6im1bkj" path="res://scenes/checkmate_test_position.tscn" id="4_nqcy6"]
 
 [node name="MainScene" type="Node2D"]
 
 [node name="Board" parent="." node_paths=PackedStringArray("game_position", "game_timer", "end_label") instance=ExtResource("1_edhng")]
 position = Vector2(109.2, 150)
-game_position = NodePath("StandardStartingPosition")
+game_position = NodePath("CheckmateTestPosition")
 game_timer = NodePath("GameTimer")
 end_label = NodePath("../EndGameLabel")
 
 [node name="StandardStartingPosition" parent="Board" instance=ExtResource("2_vsajp")]
+visible = false
 
 [node name="GameTimer" parent="Board" instance=ExtResource("3_n8w5x")]
 position = Vector2(134.8, -24)
-base_min = 0.1
+base_min = 3.0
 increment_sec = 0
+
+[node name="CheckmateTestPosition" parent="Board" instance=ExtResource("4_nqcy6")]
 
 [node name="EndGameLabel" type="Label" parent="."]
 visible = false

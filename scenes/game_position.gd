@@ -3,6 +3,7 @@ class_name GamePosition
 
 signal position_initialized()
 signal position_changed(from: Vector2i, to: Vector2i)
+signal checkmate(winner: Globals.PLAYER_COLORS)
 
 const EMPTY = "empty tile"
 
@@ -58,13 +59,16 @@ func find_kings() -> Array[Piece]:
 	)
 	return results
 
-func get_enemy_pieces(color: Globals.PLAYER_COLORS) -> Array[Piece]:
+func get_pieces_by_color(color: Globals.PLAYER_COLORS) -> Array[Piece]:
 	var results: Array[Piece] = []
 	results.assign(all_pieces_on_board()
 		.filter(func(piece): return not piece.captured)
-		.filter(func(enemy): return enemy.color != color)
+		.filter(func(piece): return piece.color == color)
 	)
 	return results
+
+func get_enemy_pieces(color: Globals.PLAYER_COLORS) -> Array[Piece]:
+	return get_pieces_by_color(Globals.opposite_color[color])
 
 func find_checked_king_coords():
 	var results: Array[Vector2i] = []
@@ -128,6 +132,12 @@ func legal_moves(hex: Vector2i) -> Array[Vector2i]:
 		return legal
 	)
 
+func is_checkmate_against(color: Globals.PLAYER_COLORS):
+	var pieces = get_pieces_by_color(color)
+	return pieces.all(func(piece):
+		return legal_moves(piece.axial_coordinates).is_empty()
+	)
+
 #
 ## Transform
 #
@@ -161,3 +171,5 @@ func move_piece(from: Vector2i, to: Vector2i) -> void:
 	grid[to] = capturing_piece
 	capturing_piece.axial_coordinates = to
 	emit_signal("position_changed", from, to)
+	if is_checkmate_against(Globals.opposite_color[capturing_piece.color]):
+		emit_signal("checkmate", capturing_piece.color)
