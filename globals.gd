@@ -11,6 +11,13 @@ enum PLAYER_COLORS {
 	BLACK
 }
 
+func opposite_color(color: PLAYER_COLORS):
+	match color:
+		PLAYER_COLORS.WHITE:
+			return PLAYER_COLORS.BLACK
+		PLAYER_COLORS.BLACK:
+			return PLAYER_COLORS.WHITE
+
 enum PIECE_TYPES {
 	PAWN,
 	KNIGHT,

@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://dq1xwsgvaes70"]
+
+[ext_resource type="Script" path="res://scenes/game_timer.gd" id="1_mauka"]
+
+[node name="GameTimer" type="Node2D"]
+script = ExtResource("1_mauka")
+increment_sec = 3
+
+[node name="WhiteTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="BlackTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="WhiteLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "10:00"
+
+[node name="BlackLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "10:00"
