@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8pd8qdkxel7b"]
+
+[ext_resource type="Script" path="res://scenes/menus/join_game_menu.gd" id="1_6d1ru"]
+
+[node name="JoinGameMenu" type="Control" node_paths=PackedStringArray("ip_text_edit", "port_text_edit", "join_game_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6d1ru")
+ip_text_edit = NodePath("MarginContainer/VBoxContainer/HBoxContainer/IPTextEdit")
+port_text_edit = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/PortTextEdit")
+join_game_button = NodePath("MarginContainer/VBoxContainer/MarginContainer/JoinGameButton")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "IP: "
+
+[node name="IPTextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(115, 0)
+layout_mode = 2
+text = "127.0.0.1"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Port: "
+
+[node name="PortTextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(95, 0)
+layout_mode = 2
+text = "29969"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 40
+
+[node name="JoinGameButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+text = "Join Game"
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer/IPTextEdit" to="." method="_on_ip_text_edit_text_changed"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/HBoxContainer2/PortTextEdit" to="." method="_on_port_text_edit_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/MarginContainer/JoinGameButton" to="." method="_on_join_game_button_pressed"]
