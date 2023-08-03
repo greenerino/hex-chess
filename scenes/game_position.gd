@@ -160,7 +160,6 @@ func undo_soft_move(original_from: Vector2i, original_to: Vector2i, captured_pie
 	grid[original_to] = captured_piece
 	grid[original_from] = capturing_piece
 
-
 func move_piece(from: Vector2i, to: Vector2i) -> void:
 	assert(is_occupied(from), str("move_piece called on empty tile: ", from))
 	var capturing_piece = grid[from]

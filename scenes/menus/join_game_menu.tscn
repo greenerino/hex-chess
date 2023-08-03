@@ -41,6 +41,7 @@ layout_mode = 2
 text = "127.0.0.1"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 alignment = 1
 

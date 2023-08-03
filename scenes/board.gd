@@ -106,6 +106,12 @@ func end_game(msg: String):
 	game_timer.pause_timers()
 	game_ended = true
 
+@rpc("any_peer", "call_local", "reliable")
+func execute_move(from: Vector2i, to: Vector2i):
+	game_position.move_piece(from, to)
+	update_checked_tiles()
+	flip_turn()
+
 #
 ## Listeners
 #
@@ -117,15 +123,13 @@ func _on_tile_clicked(tile: BoardTile):
 
 	var coords = tile.axial_coordinates
 	if tile.legal:
-		game_position.move_piece(clicked_tile.axial_coordinates, tile.axial_coordinates)
+		execute_move.rpc(clicked_tile.axial_coordinates, coords)
 		clicked_tile = null
 		highlight_legal_tiles([])
-		update_checked_tiles()
-		flip_turn()
 	elif tile == clicked_tile:
 		clicked_tile = null
 		highlight_legal_tiles([])
-	elif game_position.is_occupied(coords) and (free_play or game_position.grid[coords].color == curr_turn):
+	elif game_position.is_occupied(coords) and (free_play or (game_position.grid[coords].color == curr_turn and curr_turn == perspective)):
 		clicked_tile = tile
 		var legal_moves = game_position.legal_moves(coords)
 		highlight_legal_tiles(legal_moves)
